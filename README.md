@@ -1,9 +1,9 @@
 # Woo Subscriptions Renewal Count Updater
-Contributors: Dhanuka Gunarathna
-Donate link: https://hashcodeab.se/
-Tags: WooCommerce, Memberships, Subscriptions
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Contributors: Dhanuka Gunarathna<br/>
+Donate link: https://hashcodeab.se/<br/>
+Tags: WooCommerce, Memberships, Subscriptions<br/>
+License: GPLv2 or later<br/>
+License URI: http://www.gnu.org/licenses/gpl-2.0.html<br/>
 
 ## Description
 
@@ -12,7 +12,7 @@ The value will be updated on each successful renewal using actions from WooComme
 
 ## Dependencies
 
-WooCommerce
-WooCommerce Subscriptions
-WooCommerce Memberships
+WooCommerce<br/>
+WooCommerce Subscriptions<br/>
+WooCommerce Memberships<br/>
 
