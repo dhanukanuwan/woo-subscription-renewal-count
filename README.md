@@ -1,6 +1,7 @@
 # Woo Subscriptions Renewal Count Updater
 Contributors: Dhanuka Gunarathna<br/>
-Donate link: https://hashcodeab.se/<br/>
+Website: https://hashcodeab.se/<br/>
+Email: dhanuka@hashcodeab.se<br/>
 Tags: WooCommerce, Memberships, Subscriptions<br/>
 License: GPLv2 or later<br/>
 License URI: http://www.gnu.org/licenses/gpl-2.0.html<br/>
