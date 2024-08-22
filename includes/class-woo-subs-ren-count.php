@@ -142,6 +142,10 @@ class Woo_Subs_Ren_Count {
 
 		$plugin_admin = new Woo_Subs_Ren_Count_Admin( $this->get_plugin_name(), $this->get_version() );
 
+		$this->loader->add_action( 'woocommerce_settings_tabs_array', $plugin_admin, 'renew_count_woo_settings_tab', 70 );
+		$this->loader->add_action( 'woocommerce_settings_renew_count', $plugin_admin, 'renew_count_woo_settings_tab_content' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'renew_count_woo_settings_tab_enqueue_scripts' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'renew_count_woo_settings_string_translations', 100 );
 	}
 
 	/**
