@@ -146,6 +146,9 @@ class Woo_Subs_Ren_Count {
 		$this->loader->add_action( 'woocommerce_settings_renew_count', $plugin_admin, 'renew_count_woo_settings_tab_content' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'renew_count_woo_settings_tab_enqueue_scripts' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'renew_count_woo_settings_string_translations', 100 );
+
+		$this->loader->add_action( 'rest_api_init', $plugin_admin, 'renew_count_get_plugin_settings_endpoint' );
+		$this->loader->add_action( 'rest_api_init', $plugin_admin, 'renew_count_update_custom_field_name_endpoint' );
 	}
 
 	/**
