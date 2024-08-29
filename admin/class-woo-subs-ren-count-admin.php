@@ -262,6 +262,70 @@ class Woo_Subs_Ren_Count_Admin {
 	}
 
 	/**
+	 * Get all subscriptions.
+	 *
+	 * @since    1.0.0
+	 */
+	public function renew_count_update_subscription_custom_field_name_endpoint() {
+		register_rest_route(
+			'renewcountwoo/v1',
+			'/updatesubscriptioncustomfieldname',
+			array(
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => array( $this, 'renew_count_update_subscription_custom_field_name_endpoint_callback' ),
+					'permission_callback' => array( $this, 'renew_count_rest_api_user_permissions' ),
+					'args'                => array(
+						'field_name' => array(
+							'required' => true,
+							'type'     => 'string',
+						),
+						'post_ids'   => array(
+							'required' => true,
+							'type'     => 'string',
+						),
+					),
+				),
+			)
+		);
+	}
+
+	/**
+	 * Get all plugin settings callback.
+	 *
+	 * @param    array $request request array.
+	 * @since    1.0.0
+	 */
+	public function renew_count_update_subscription_custom_field_name_endpoint_callback( $request ) {
+
+		$field_name = sanitize_text_field( $request->get_param( 'field_name' ) );
+		$post_ids   = sanitize_text_field( $request->get_param( 'post_ids' ) );
+
+		if ( ! empty( $post_ids ) ) {
+			$post_ids = json_decode( $post_ids );
+		}
+
+		$data    = array();
+		$success = false;
+		$message = '';
+
+		$data = array(
+			'field_name' => $field_name,
+			'post_ids'   => $post_ids,
+		);
+
+		$response = rest_ensure_response(
+			array(
+				'data'    => $data,
+				'success' => $success,
+				'message' => $message,
+			)
+		);
+
+		return $response;
+	}
+
+	/**
 	 * Check user permissions.
 	 *
 	 * @param    array $request request array.

@@ -35,6 +35,10 @@ const CustomFieldDataReducer = (state, action) => {
             newState.isPending = false;
             newState.canSave = false;
 
+            if ( action.payload.updatedSettings.success ) {
+                newState.subscriptionsUpdated = false;
+            }
+
             if( typeof action.payload.updatedSettings.update_errors !== 'undefined'){
                 newState.notice = __( 'An error occurred.', 'woo-subs-ren-count' );
                 newState.hasError = true;
@@ -44,6 +48,17 @@ const CustomFieldDataReducer = (state, action) => {
                 newState.notice = action.payload.updatedSettings.message;
                 newState.hasError = true;
             }
+            break;
+
+        case 'UPDATE_SUBSCRIPTION_FIELD_BEFORE':
+            newState.isPending = action.payload.isPending;
+            newState.hasError = false;
+            break;
+        
+        case 'UPDATE_SUBSCRIPTION_FIELD':
+            newState.updatedSubscriptions = action.payload.updatedData.data;
+            newState.canSave = false;
+
             break;
 
         case 'UPDATE_STATE':

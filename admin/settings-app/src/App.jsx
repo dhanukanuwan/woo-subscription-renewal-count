@@ -2,10 +2,11 @@ import { useContext, useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { TextControl, Spinner, Button, Notice } from '@wordpress/components';
 import { SettingsContext } from './context/customFieldDataContext';
+import SubscriptionsUpdater from './partials/SubscriptionsUpdater';
 
 const App = () => {
 
-	const { useSettings, useIsPending, useUpdateCustomField, useSubscriptions, useHasError, useNotice } = useContext(SettingsContext);
+	const { useSettings, useIsPending, useUpdateCustomField, useHasError, useNotice } = useContext(SettingsContext);
     const [customFieldName, setCustomFieldName] = useState('');
 
 	useEffect(() => {
@@ -43,12 +44,14 @@ const App = () => {
 					label={__( 'Custom Field Name', 'woo-subs-ren-count' )}
 					value={ customFieldName }
 					onChange={ ( value ) => setCustomFieldName( value ) }
-					help={ __( 'All subsciptions will be updated when you change the field name.', 'woo-subs-ren-count' ) }
+					help={ __( 'All subsciptions must be updated after you change the field name.', 'woo-subs-ren-count' ) }
 				/>
 				<Button variant="primary" onClick={() => useUpdateCustomField({field_name: customFieldName})} disabled={ useSettings && useSettings.custom_field_name === customFieldName }>
-					<span>{__( 'Save & Update Subscriptions', 'woo-subs-ren-count' )}</span>
+					<span>{__( 'Update Custom Field Name', 'woo-subs-ren-count' )}</span>
 					{ useIsPending && <Spinner /> }
 				</Button>
+
+				<SubscriptionsUpdater />
 			</div>
             
         </div>

@@ -50,3 +50,32 @@ export const updateCustomField = async ( data ) => {
     
     return subscriptions;
 };
+
+export const updateSubscriptionField = async ( data ) => {
+    let path = 'renewcountwoo/v1/updatesubscriptioncustomfieldname',
+        subscription = [];
+
+        let queryArgs = {
+            field_name: data?.field_name,
+            post_ids: data?.post_ids,
+        }
+    
+        path = addQueryArgs(path, queryArgs);
+
+    try {
+        subscription = await apiFetch({
+            path: path,
+            method : 'POST',
+            headers: {
+                "X-WP-Nonce": renew_count_js_data?.rest_nonce
+            }
+        });
+    } catch (error) {
+        console.log('updateCustomField Errors:', error);
+        return {
+            update_errors : true
+        }
+    }
+    
+    return subscription;
+};

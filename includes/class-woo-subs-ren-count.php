@@ -149,6 +149,7 @@ class Woo_Subs_Ren_Count {
 
 		$this->loader->add_action( 'rest_api_init', $plugin_admin, 'renew_count_get_plugin_settings_endpoint' );
 		$this->loader->add_action( 'rest_api_init', $plugin_admin, 'renew_count_update_custom_field_name_endpoint' );
+		$this->loader->add_action( 'rest_api_init', $plugin_admin, 'renew_count_update_subscription_custom_field_name_endpoint' );
 	}
 
 	/**
