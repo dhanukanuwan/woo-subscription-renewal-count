@@ -170,7 +170,7 @@ class Woo_Subs_Ren_Count_Admin {
 	}
 
 	/**
-	 * Get all subscriptions.
+	 * Get all subscriptions endpoint.
 	 *
 	 * @since    1.0.0
 	 */
@@ -195,7 +195,7 @@ class Woo_Subs_Ren_Count_Admin {
 	}
 
 	/**
-	 * Get all plugin settings callback.
+	 * Get all subscriptions callback.
 	 *
 	 * @param    array $request request array.
 	 * @since    1.0.0
@@ -262,7 +262,7 @@ class Woo_Subs_Ren_Count_Admin {
 	}
 
 	/**
-	 * Get all subscriptions.
+	 * Bulk update active subscriptions with the custom field.
 	 *
 	 * @since    1.0.0
 	 */
@@ -291,7 +291,7 @@ class Woo_Subs_Ren_Count_Admin {
 	}
 
 	/**
-	 * Get all plugin settings callback.
+	 * Bulk update active subscriptions callback.
 	 *
 	 * @param    array $request request array.
 	 * @since    1.0.0
@@ -355,5 +355,76 @@ class Woo_Subs_Ren_Count_Admin {
 	 */
 	public function renew_count_rest_api_user_permissions( $request ) { //phpcs:ignore
 		return current_user_can( 'manage_options' );
+	}
+
+	/**
+	 * Add custom field to the subscription on inital successful order payment.
+	 *
+	 * @param    WC_Subscription $subscription Object representing the subscription which has just received a payment.
+	 * @since    1.0.0
+	 */
+	public function renew_count_add_custom_field_on_inital_payment( $subscription ) {
+
+		$plugin_settings = get_option( 'renew_count_woo_settings' );
+
+		// Do nothing if custom field name not saved.
+		if ( empty( $plugin_settings ) || ( isset( $plugin_settings['custom_field_name'] ) && empty( $plugin_settings['custom_field_name'] ) ) ) {
+			return;
+		}
+
+		$custom_field_name = $plugin_settings['custom_field_name'];
+
+		// Make sure this is the initial payment by checking existing custom fields.
+		$renew_count   = get_post_meta( $subscription->ID, $custom_field_name, true );
+		$order_renewed = get_post_meta( $subscription->ID, 'renew_count_order_renewed', true );
+
+		// Do nothing if custom field values are not empty.
+		if ( ! empty( $renew_count ) && 'true' === $order_renewed ) {
+			return;
+		}
+
+		$renew_count       = 1;
+		$count_update_type = 'initial';
+
+		$initial_count = apply_filters( 'woo_subs_renew_count', $renew_count, $count_update_type );
+
+		update_post_meta( $subscription->ID, $custom_field_name, $initial_count );
+	}
+
+	/**
+	 * Increase subscription reneal count by +1 on successfull renewal payment.
+	 *
+	 * @param    WC_Subscription $subscription Object representing the subscription which has just received a payment.
+	 * @since    1.0.0
+	 */
+	public function renew_count_increase_count_on_renew_payment( $subscription ) {
+
+		$plugin_settings = get_option( 'renew_count_woo_settings' );
+
+		// Do nothing if custom field name not saved.
+		if ( empty( $plugin_settings ) || ( isset( $plugin_settings['custom_field_name'] ) && empty( $plugin_settings['custom_field_name'] ) ) ) {
+			return;
+		}
+
+		$custom_field_name = $plugin_settings['custom_field_name'];
+
+		// Get saved custom field values.
+		$renew_count   = get_post_meta( $subscription->ID, $custom_field_name, true );
+		$order_renewed = get_post_meta( $subscription->ID, 'renew_count_order_renewed', true );
+
+		if ( empty( $renew_count ) ) {
+			$renew_count = 1;
+		}
+
+		if ( empty( $order_renewed ) ) {
+			update_post_meta( $subscription->ID, 'renew_count_order_renewed', 'true' );
+		}
+
+		$renew_count       = (int) $renew_count + 1;
+		$count_update_type = 'renewal';
+
+		$new_count = apply_filters( 'woo_subs_renew_count', $renew_count, $count_update_type );
+
+		update_post_meta( $subscription->ID, $custom_field_name, $new_count );
 	}
 }

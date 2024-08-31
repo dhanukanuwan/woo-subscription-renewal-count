@@ -111,7 +111,6 @@ class Woo_Subs_Ren_Count {
 		require_once plugin_dir_path( __DIR__ ) . 'admin/class-woo-subs-ren-count-admin.php';
 
 		$this->loader = new Woo_Subs_Ren_Count_Loader();
-
 	}
 
 	/**
@@ -128,7 +127,6 @@ class Woo_Subs_Ren_Count {
 		$plugin_i18n = new Woo_Subs_Ren_Count_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
 	}
 
 	/**
@@ -150,6 +148,9 @@ class Woo_Subs_Ren_Count {
 		$this->loader->add_action( 'rest_api_init', $plugin_admin, 'renew_count_get_plugin_settings_endpoint' );
 		$this->loader->add_action( 'rest_api_init', $plugin_admin, 'renew_count_update_custom_field_name_endpoint' );
 		$this->loader->add_action( 'rest_api_init', $plugin_admin, 'renew_count_update_subscription_custom_field_name_endpoint' );
+
+		$this->loader->add_action( 'woocommerce_subscription_payment_complete', $plugin_admin, 'renew_count_add_custom_field_on_inital_payment', 10 );
+		$this->loader->add_action( 'woocommerce_subscription_renewal_payment_complete', $plugin_admin, 'renew_count_increase_count_on_renew_payment', 10 );
 	}
 
 	/**
@@ -191,5 +192,4 @@ class Woo_Subs_Ren_Count {
 	public function get_version() {
 		return $this->version;
 	}
-
 }
