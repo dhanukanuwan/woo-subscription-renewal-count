@@ -228,7 +228,7 @@ class Woo_Subs_Ren_Count_Admin {
 
 			$args = array(
 				'subscriptions_per_page' => -1,
-				'subscription_status'    => array( 'wc-active', 'wc-pending-cancel', 'wc-on-hold' ),
+				'subscription_status'    => array( 'wc-active' ),
 			);
 
 			$subscriptions = wcs_get_subscriptions( $args );
@@ -305,20 +305,42 @@ class Woo_Subs_Ren_Count_Admin {
 			$post_ids = json_decode( $post_ids );
 		}
 
-		$data    = array();
-		$success = false;
-		$message = '';
+		$updated_count = 0;
+		$failed_count  = 0;
+		$total         = 0;
+
+		if ( ! empty( $field_name ) && ! empty( $post_ids ) ) {
+
+			$total = count( $post_ids );
+
+			foreach ( $post_ids as $post_id ) {
+
+				$old_custom_field_val = get_post_meta( $post_id, 'BLP_Count', true );
+				$new_custom_field_val = 1;
+
+				if ( ! empty( $old_custom_field_val ) ) {
+					$new_custom_field_val = (int) $old_custom_field_val;
+				}
+
+				$status = update_post_meta( $post_id, $field_name, $new_custom_field_val );
+
+				if ( false === $status ) {
+					$failed_count = ++$failed_count;
+				} else {
+					$updated_count = ++$updated_count;
+				}
+			}
+		}
 
 		$data = array(
-			'field_name' => $field_name,
-			'post_ids'   => $post_ids,
+			'updated_count' => $updated_count,
+			'failed_count'  => $failed_count,
+			'total'         => $total,
 		);
 
 		$response = rest_ensure_response(
 			array(
-				'data'    => $data,
-				'success' => $success,
-				'message' => $message,
+				'data' => $data,
 			)
 		);
 

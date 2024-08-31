@@ -32,7 +32,7 @@ const App = () => {
         <div>
             <h1>{ __( 'Subscription Renewal Count Custom Field Settings', 'woo-subs-ren-count' ) }</h1>
 
-			<div style={{maxWidth: '600px', marginTop: '20px'}}>
+			<div style={{maxWidth: '700px', marginTop: '20px'}}>
 
 				{ useHasError && 
 					<div style={{marginBottom: '20px'}}>

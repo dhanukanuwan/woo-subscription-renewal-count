@@ -59,6 +59,12 @@ const CustomFieldDataReducer = (state, action) => {
             newState.updatedSubscriptions = action.payload.updatedData.data;
             newState.canSave = false;
 
+            if( typeof action.payload.updatedData.update_errors !== 'undefined'){
+                newState.notice = __( 'An error occurred.', 'woo-subs-ren-count' );
+                newState.hasError = true;
+                newState.isPending = false;
+            }
+
             break;
 
         case 'UPDATE_STATE':
