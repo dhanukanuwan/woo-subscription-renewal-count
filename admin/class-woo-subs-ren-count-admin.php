@@ -372,11 +372,13 @@ class Woo_Subs_Ren_Count_Admin {
 			return;
 		}
 
+		$subscription_id = $subscription->get_id();
+
 		$custom_field_name = $plugin_settings['custom_field_name'];
 
 		// Make sure this is the initial payment by checking existing custom fields.
-		$renew_count   = get_post_meta( $subscription->ID, $custom_field_name, true );
-		$order_renewed = get_post_meta( $subscription->ID, 'renew_count_order_renewed', true );
+		$renew_count   = get_post_meta( $subscription_id, $custom_field_name, true );
+		$order_renewed = get_post_meta( $subscription_id, 'renew_count_order_renewed', true );
 
 		// Do nothing if custom field values are not empty.
 		if ( ! empty( $renew_count ) && 'true' === $order_renewed ) {
@@ -388,7 +390,7 @@ class Woo_Subs_Ren_Count_Admin {
 
 		$initial_count = apply_filters( 'woo_subs_renew_count', $renew_count, $count_update_type );
 
-		update_post_meta( $subscription->ID, $custom_field_name, $initial_count );
+		update_post_meta( $subscription_id, $custom_field_name, $initial_count );
 	}
 
 	/**
@@ -406,18 +408,20 @@ class Woo_Subs_Ren_Count_Admin {
 			return;
 		}
 
+		$subscription_id = $subscription->get_id();
+
 		$custom_field_name = $plugin_settings['custom_field_name'];
 
 		// Get saved custom field values.
-		$renew_count   = get_post_meta( $subscription->ID, $custom_field_name, true );
-		$order_renewed = get_post_meta( $subscription->ID, 'renew_count_order_renewed', true );
+		$renew_count   = get_post_meta( $subscription_id, $custom_field_name, true );
+		$order_renewed = get_post_meta( $subscription_id, 'renew_count_order_renewed', true );
 
 		if ( empty( $renew_count ) ) {
 			$renew_count = 1;
 		}
 
 		if ( empty( $order_renewed ) ) {
-			update_post_meta( $subscription->ID, 'renew_count_order_renewed', 'true' );
+			update_post_meta( $subscription_id, 'renew_count_order_renewed', 'true' );
 		}
 
 		$renew_count       = (int) $renew_count + 1;
@@ -425,6 +429,6 @@ class Woo_Subs_Ren_Count_Admin {
 
 		$new_count = apply_filters( 'woo_subs_renew_count', $renew_count, $count_update_type );
 
-		update_post_meta( $subscription->ID, $custom_field_name, $new_count );
+		update_post_meta( $subscription_id, $custom_field_name, $new_count );
 	}
 }

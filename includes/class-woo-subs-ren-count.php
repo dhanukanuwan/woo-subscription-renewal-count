@@ -149,8 +149,8 @@ class Woo_Subs_Ren_Count {
 		$this->loader->add_action( 'rest_api_init', $plugin_admin, 'renew_count_update_custom_field_name_endpoint' );
 		$this->loader->add_action( 'rest_api_init', $plugin_admin, 'renew_count_update_subscription_custom_field_name_endpoint' );
 
-		$this->loader->add_action( 'woocommerce_subscription_payment_complete', $plugin_admin, 'renew_count_add_custom_field_on_inital_payment', 10 );
-		$this->loader->add_action( 'woocommerce_subscription_renewal_payment_complete', $plugin_admin, 'renew_count_increase_count_on_renew_payment', 10 );
+		$this->loader->add_action( 'woocommerce_subscription_payment_complete', $plugin_admin, 'renew_count_add_custom_field_on_inital_payment', 100, 1 );
+		$this->loader->add_action( 'woocommerce_subscription_renewal_payment_complete', $plugin_admin, 'renew_count_increase_count_on_renew_payment', 100, 1 );
 	}
 
 	/**
