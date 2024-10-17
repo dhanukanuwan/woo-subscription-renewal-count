@@ -2,17 +2,17 @@
 /**
  * The plugin bootstrap file
  *
- * @link              https://hashcodeab.se
+ * @link              https://wpdoctor.se
  * @since             1.0.0
  * @package           Woo_Subs_Ren_Count
  *
  * @wordpress-plugin
  * Plugin Name:       Woo Subscriptions Renewal Count Updater
- * Plugin URI:        https://hashcodeab.se
+ * Plugin URI:        https://wpdoctor.se
  * Description:       Updates the number of subscription renewals of each subscription.
  * Version:           1.0.0
  * Author:            Dhanuka Gunarathna
- * Author URI:        https://hashcodeab.se/
+ * Author URI:        https://wpdoctor.se/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       woo-subs-ren-count

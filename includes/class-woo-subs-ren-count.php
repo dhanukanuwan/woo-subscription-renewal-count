@@ -2,7 +2,7 @@
 /**
  * The file that defines the core plugin class
  *
- * @link       https://hashcodeab.se
+ * @link       https://wpdoctor.se
  * @since      1.0.0
  *
  * @package    Woo_Subs_Ren_Count
@@ -21,7 +21,7 @@
  * @since      1.0.0
  * @package    Woo_Subs_Ren_Count
  * @subpackage Woo_Subs_Ren_Count/includes
- * @author     Dhanuka Gunarathna <dhanuka@hashcodeab.se>
+ * @author     Dhanuka Gunarathna <dhanuka@wpdoctor.se>
  */
 class Woo_Subs_Ren_Count {
 
