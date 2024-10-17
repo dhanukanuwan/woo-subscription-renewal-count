@@ -369,6 +369,10 @@ class Woo_Subs_Ren_Count_Admin {
 
 		// Do nothing if custom field name not saved.
 		if ( empty( $plugin_settings ) || ( isset( $plugin_settings['custom_field_name'] ) && empty( $plugin_settings['custom_field_name'] ) ) ) {
+
+			$failed_note = __( 'Adding initial payment count failed. Reason: Custom field name not saved.', 'woo-subs-ren-count' );
+			$subscription->add_order_note( $failed_note );
+
 			return;
 		}
 
@@ -377,11 +381,15 @@ class Woo_Subs_Ren_Count_Admin {
 		$custom_field_name = $plugin_settings['custom_field_name'];
 
 		// Make sure this is the initial payment by checking existing custom fields.
-		$renew_count   = get_post_meta( $subscription_id, $custom_field_name, true );
-		$order_renewed = get_post_meta( $subscription_id, 'renew_count_order_renewed', true );
+		$renew_count         = get_post_meta( $subscription_id, $custom_field_name, true );
+		$initial_count_saved = get_post_meta( $subscription_id, 'initial_count_saved', true );
 
 		// Do nothing if custom field values are not empty.
-		if ( ! empty( $renew_count ) && 'true' === $order_renewed ) {
+		if ( ! empty( $renew_count ) && 'true' === $initial_count_saved ) {
+
+			$failed_note = __( 'Adding initial payment count skipped. Reason: Possible renewal order.', 'woo-subs-ren-count' );
+			$subscription->add_order_note( $failed_note );
+
 			return;
 		}
 
@@ -390,7 +398,18 @@ class Woo_Subs_Ren_Count_Admin {
 
 		$initial_count = apply_filters( 'woo_subs_renew_count', $renew_count, $count_update_type );
 
-		update_post_meta( $subscription_id, $custom_field_name, $initial_count );
+		$update_status = update_post_meta( $subscription_id, $custom_field_name, $initial_count );
+
+		if ( false !== $update_status ) {
+			// translators: Subscription renewal count.
+			$success_note = sprintf( __( 'Initial payment count saved. Count: %d', 'woo-subs-ren-count' ), $initial_count );
+			$subscription->add_order_note( $success_note );
+
+			update_post_meta( $subscription_id, 'initial_count_saved', 'true' );
+		} else {
+			$failed_note = __( 'Initial payment count saving failed.', 'woo-subs-ren-count' );
+			$subscription->add_order_note( $failed_note );
+		}
 	}
 
 	/**
@@ -405,6 +424,10 @@ class Woo_Subs_Ren_Count_Admin {
 
 		// Do nothing if custom field name not saved.
 		if ( empty( $plugin_settings ) || ( isset( $plugin_settings['custom_field_name'] ) && empty( $plugin_settings['custom_field_name'] ) ) ) {
+
+			$failed_note = __( 'Updating renewal count failed. Reason: Custom field name not saved.', 'woo-subs-ren-count' );
+			$subscription->add_order_note( $failed_note );
+
 			return;
 		}
 
@@ -429,6 +452,15 @@ class Woo_Subs_Ren_Count_Admin {
 
 		$new_count = apply_filters( 'woo_subs_renew_count', $renew_count, $count_update_type );
 
-		update_post_meta( $subscription_id, $custom_field_name, $new_count );
+		$update_status = update_post_meta( $subscription_id, $custom_field_name, $new_count );
+
+		if ( false !== $update_status ) {
+			// translators: Subscription renewal count.
+			$success_note = sprintf( __( 'Successfully updated the renewal count. Count: %d', 'woo-subs-ren-count' ), $new_count );
+			$subscription->add_order_note( $success_note );
+		} else {
+			$failed_note = __( 'Updating renewal count failed.', 'woo-subs-ren-count' );
+			$subscription->add_order_note( $failed_note );
+		}
 	}
 }
