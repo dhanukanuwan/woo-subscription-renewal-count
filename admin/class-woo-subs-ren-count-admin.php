@@ -315,14 +315,39 @@ class Woo_Subs_Ren_Count_Admin {
 
 			foreach ( $post_ids as $post_id ) {
 
-				$old_custom_field_val = get_post_meta( $post_id, 'BLP_Count', true );
-				$new_custom_field_val = 1;
+				$status = true;
 
-				if ( ! empty( $old_custom_field_val ) ) {
-					$new_custom_field_val = (int) $old_custom_field_val;
+				$subscription = wcs_get_subscription( $post_id );
+
+				// Make sure if it's a subscription object.
+				if ( ! is_a( $subscription, 'WC_Subscription' ) ) {
+					$status = false;
+				} else {
+
+					// Get previous renewal orders of the subscription.
+					$renewal_orders = $subscription->get_related_orders( 'all', 'renewal' );
+					// Starts from 1 because we are including the initial order as well.
+					$renewal_orders_count = 1;
+
+					if ( empty( $renewal_orders ) || is_wp_error( $renewal_orders ) || ! is_array( $renewal_orders ) ) {
+						$renewal_orders_count = 1;
+					} else {
+
+						foreach ( $renewal_orders as $renewal_order ) {
+
+							$order_status = $renewal_order->get_status();
+
+							// Count only completed orders.
+							if ( 'completed' === $order_status ) {
+								++$renewal_orders_count;
+							} else {
+								continue;
+							}
+						}
+					}
 				}
 
-				$status = update_post_meta( $post_id, $field_name, $new_custom_field_val );
+				$status = update_post_meta( $post_id, $field_name, $renewal_orders_count );
 
 				if ( false === $status ) {
 					$failed_count = ++$failed_count;
