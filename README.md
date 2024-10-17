@@ -23,8 +23,8 @@ The count starts from 1 for all subscriptions because it counts the initial orde
 Plugin is using following actions introduced by WooCommerce Subscriptions plugin to update the count.
 
 ```php
-woocommerce_subscription_payment_complete // Used to identify the intial successful order payment
-woocommerce_subscription_renewal_payment_complete // Used to identify successful renewal order payments 
+woocommerce_subscription_payment_complete //Used to identify the initial successful order payment.
+woocommerce_subscription_renewal_payment_complete //Used to identify successful renewal order payments.
 ```
 
 Plugin also introduces a filter for you to access the new count just before it's going to save in the database.
